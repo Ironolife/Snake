@@ -164,25 +164,25 @@
   {/each}
 </div>
 
-<style>
+<style lang="scss">
   .grid {
     display: grid;
     grid-template-columns: repeat(15, 1fr);
     gap: 8px;
     transition: filter 400ms;
-  }
-  .blur {
-    filter: blur(8px) opacity(0.5);
-  }
-  .cell {
-    position: relative;
-    padding-top: 100%;
-    background-color: #333333;
-    border-radius: 2px;
-  }
-  :global(.cell > div) {
-    position: absolute;
-    border-radius: 2px;
-    inset: 0;
+    &.blur {
+      filter: blur(8px) opacity(0.5);
+    }
+    > .cell {
+      position: relative;
+      padding-top: 100%;
+      background-color: #333333;
+      border-radius: 2px;
+    }
+    :global(.cell > div) {
+      position: absolute;
+      border-radius: 2px;
+      inset: 0;
+    }
   }
 </style>

@@ -21,28 +21,28 @@
   </footer>
 </main>
 
-<style>
+<style lang="scss">
   main {
     max-width: 640px;
     margin: 0 auto;
     position: relative;
-  }
-  header {
-    display: flex;
-    margin: 32px 0;
-    color: limegreen;
-    font-size: 32pt;
-    font-weight: 700;
-  }
-  footer {
-    margin-top: 32px;
-    text-align: center;
-  }
-  footer > a {
-    color: limegreen;
-    font-size: 16pt;
-  }
-  .spacer {
-    flex: 1;
+    > header {
+      display: flex;
+      margin: 32px 0;
+      color: limegreen;
+      font-size: 32pt;
+      font-weight: 700;
+      > .spacer {
+        flex: 1;
+      }
+    }
+    > footer {
+      margin-top: 32px;
+      text-align: center;
+      > a {
+        color: limegreen;
+        font-size: 16pt;
+      }
+    }
   }
 </style>
