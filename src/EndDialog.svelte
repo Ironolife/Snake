@@ -1,0 +1,41 @@
+<script lang="ts">
+  import { fly } from 'svelte/transition';
+  export let message: string;
+
+  const handleClick = () => window.location.reload();
+</script>
+
+<div class="dialog" in:fly={{ y: 200, duration: 700 }}>
+  <div class="message">{message}</div>
+  <button type="button" on:click={handleClick}>Restart</button>
+</div>
+
+<style>
+  .dialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .message {
+    text-transform: capitalize;
+    color: limegreen;
+    font-size: 32pt;
+    font-weight: 700;
+    margin-bottom: 32px;
+  }
+  button {
+    text-transform: uppercase;
+    border-radius: 4px;
+    background-color: limegreen;
+    color: black;
+    padding: 8px 24px;
+    font-size: 16pt;
+    font-weight: 700;
+    border: none;
+  }
+</style>

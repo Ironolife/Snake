@@ -1,15 +1,14 @@
 <script lang="ts">
-  import { onDestroy, onMount } from 'svelte';
   import Food from './Food.svelte';
   import Snake from './Snake.svelte';
   import { gameState, score } from './store';
   import type { Direction, Position } from './types';
 
-  const WIDTH = 29;
-  const HEIGHT = 29;
+  const WIDTH = 15;
+  const HEIGHT = 15;
 
   let speed: number = 150;
-  let direction: Direction | null = null;
+  let direction: Direction | null = 'right';
   let nextDirection: Direction | null = null;
 
   const positionToIndex = ([x, y]: Position): number => {
@@ -24,14 +23,14 @@
     .map((_, index) => index);
 
   let snake: Position[] = [
-    [8, 14],
-    [7, 14],
-    [6, 14],
+    [4, 7],
+    [3, 7],
+    [2, 7],
   ];
 
   $: snakeIndices = snake.map(positionToIndex);
 
-  let foodIndex: number | null = positionToIndex([14, 14]);
+  let foodIndex: number | null = positionToIndex([7, 7]);
 
   const getNewHead = (): Position => {
     const [x, y] = snake[0];
@@ -143,7 +142,7 @@
       }
     }
 
-    if ($gameState === 'stop') {
+    if ($gameState === 'stop' && nextDirection) {
       gameState.set('play');
 
       setTimeout(() => nextState(), speed);
@@ -153,7 +152,7 @@
 
 <svelte:window on:keydown={handleKeydown} />
 
-<div class="grid">
+<div class="grid" class:blur={$gameState === 'won' || $gameState === 'lost'}>
   {#each Array(WIDTH * HEIGHT) as _, index}
     <div class="cell">
       {#if snakeIndices.includes(index)}
@@ -168,8 +167,12 @@
 <style>
   .grid {
     display: grid;
-    grid-template-columns: repeat(29, 1fr);
-    gap: 2px;
+    grid-template-columns: repeat(15, 1fr);
+    gap: 8px;
+    transition: filter 400ms;
+  }
+  .blur {
+    filter: blur(8px) opacity(0.5);
   }
   .cell {
     position: relative;
