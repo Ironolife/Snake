@@ -53,8 +53,9 @@
     }
     > .board {
       flex: 1 0 auto;
-      display: grid;
-      place-items: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
     > footer {
       flex-shrink: 0;
