@@ -2,12 +2,14 @@
   import Food from './Food.svelte';
   import Snake from './Snake.svelte';
   import { gameState, score } from './store';
+  import swipeable from './swipeable';
   import type { Direction, Position } from './types';
 
   const WIDTH = 15;
   const HEIGHT = 15;
+  const INITIAL_SPEED = 180;
 
-  let speed: number = 150;
+  let speed = INITIAL_SPEED;
   let direction: Direction | null = 'right';
   let nextDirection: Direction | null = null;
 
@@ -64,7 +66,7 @@
     const randomIndex = Math.floor(Math.random() * emptyIndices.length);
     foodIndex = emptyIndices[randomIndex];
 
-    speed = speed * 0.95;
+    speed = INITIAL_SPEED * Math.pow(0.95, Math.min($score, 15));
     score.update((score) => score + 1);
   };
 
@@ -110,37 +112,8 @@
     }
   };
 
-  const handleKeydown = (event: KeyboardEvent) => {
-    switch (event.key) {
-      case 'ArrowUp':
-      case 'w': {
-        if (direction !== 'down') {
-          nextDirection = 'up';
-        }
-        break;
-      }
-      case 'ArrowDown':
-      case 's': {
-        if (direction !== 'up') {
-          nextDirection = 'down';
-        }
-        break;
-      }
-      case 'ArrowLeft':
-      case 'a': {
-        if (direction !== 'right') {
-          nextDirection = 'left';
-        }
-        break;
-      }
-      case 'ArrowRight':
-      case 'd': {
-        if (direction !== 'left') {
-          nextDirection = 'right';
-        }
-        break;
-      }
-    }
+  const changeDirection = (direction: Direction) => {
+    nextDirection = direction;
 
     if ($gameState === 'stop' && nextDirection) {
       gameState.set('play');
@@ -148,11 +121,70 @@
       setTimeout(() => nextState(), speed);
     }
   };
+
+  const handleKeydown = (event: KeyboardEvent) => {
+    switch (event.key) {
+      case 'ArrowUp':
+      case 'w': {
+        if (direction !== 'down') {
+          changeDirection('up');
+        }
+        break;
+      }
+      case 'ArrowDown':
+      case 's': {
+        if (direction !== 'up') {
+          changeDirection('down');
+        }
+        break;
+      }
+      case 'ArrowLeft':
+      case 'a': {
+        if (direction !== 'right') {
+          changeDirection('left');
+        }
+        break;
+      }
+      case 'ArrowRight':
+      case 'd': {
+        if (direction !== 'left') {
+          changeDirection('right');
+        }
+        break;
+      }
+    }
+  };
+
+  const handleSwipe = ({ detail }: { detail: Direction }) => {
+    switch (detail) {
+      case 'up': {
+        if (direction !== 'down') changeDirection('up');
+        break;
+      }
+      case 'down': {
+        if (direction !== 'up') changeDirection('down');
+        break;
+      }
+      case 'left': {
+        if (direction !== 'right') changeDirection('left');
+        break;
+      }
+      case 'right': {
+        if (direction !== 'left') changeDirection('right');
+        break;
+      }
+    }
+  };
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
 
-<div class="grid" class:blur={$gameState === 'won' || $gameState === 'lost'}>
+<div
+  class="grid"
+  class:blur={$gameState === 'won' || $gameState === 'lost'}
+  use:swipeable
+  on:swipe={handleSwipe}
+>
   {#each Array(WIDTH * HEIGHT) as _, index}
     <div class="cell">
       {#if snakeIndices.includes(index)}
@@ -182,7 +214,10 @@
     :global(.cell > div) {
       position: absolute;
       border-radius: 2px;
-      inset: 0;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
     }
   }
 </style>
