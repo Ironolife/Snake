@@ -10,7 +10,9 @@
     <div class="spacer" />
     <div>{$score}</div>
   </header>
-  <Board />
+  <div class="board">
+    <Board />
+  </div>
   {#if $gameState === 'won' || $gameState === 'lost'}
     <EndDialog message={`You ${$gameState}!`} />
   {/if}
@@ -22,26 +24,43 @@
 </main>
 
 <style lang="scss">
+  :global(:root) {
+    @media screen and (max-width: 640px) {
+      font-size: 0.8rem;
+    }
+  }
   main {
+    height: 100%;
     max-width: 640px;
     margin: 0 auto;
+    padding: 0 16px;
     position: relative;
+    display: flex;
+    flex-direction: column;
     > header {
+      flex-shrink: 0;
       display: flex;
-      margin: 32px 0;
+      margin: 16px 0;
       color: limegreen;
-      font-size: 32pt;
+      font-size: 2.5rem;
       font-weight: 700;
       > .spacer {
         flex: 1;
       }
     }
+    > .board {
+      flex: 1 0 auto;
+      display: grid;
+      place-items: center;
+    }
     > footer {
-      margin-top: 32px;
+      flex-shrink: 0;
+      margin: 16px 0;
       text-align: center;
       > a {
         color: limegreen;
-        font-size: 16pt;
+        font-size: 1.5rem;
+        font-weight: 700;
       }
     }
   }

@@ -199,9 +199,10 @@
 <style lang="scss">
   .grid {
     display: grid;
+    width: 100%;
     grid-template-columns: repeat(15, 1fr);
     gap: 8px;
-    transition: filter 400ms;
+    transition: filter 700ms;
     &.blur {
       filter: blur(8px) opacity(0.5);
     }

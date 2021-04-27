@@ -23,7 +23,7 @@
     > .message {
       text-transform: capitalize;
       color: limegreen;
-      font-size: 32pt;
+      font-size: 2.5rem;
       font-weight: 700;
       margin-bottom: 32px;
     }
