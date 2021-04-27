@@ -28,6 +28,9 @@
     @media screen and (max-width: 640px) {
       font-size: 0.8rem;
     }
+    * {
+      user-select: none;
+    }
   }
   main {
     height: 100%;

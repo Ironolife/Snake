@@ -1,13 +1,21 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+
   import { fly } from 'svelte/transition';
   export let message: string;
+
+  let restartButton: HTMLButtonElement;
+
+  onMount(() => restartButton.focus());
 
   const handleClick = () => window.location.reload();
 </script>
 
 <div class="dialog" in:fly={{ y: 200, duration: 700 }}>
   <div class="message">{message}</div>
-  <button type="button" on:click={handleClick}>Restart</button>
+  <button bind:this={restartButton} type="button" on:click={handleClick}
+    >Restart</button
+  >
 </div>
 
 <style lang="scss">
